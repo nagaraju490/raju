@@ -1,3 +1,4 @@
+#!/usr/bin/env python3
 import os
 import sys
 from datetime import datetime
@@ -17,6 +18,7 @@ v_folder = <folder_name>
 v_file = <file_name_inside_folder>
 dest_path = <file_destination_path>
 
+#Intially need to create a refresh_token token from box.com and read the file
 try:
     r = open('/Users/nagaraju/Desktop/box_token.txt', 'r')
     rf = r.read().replace('\n', '')
@@ -24,6 +26,7 @@ try:
 except Exception as E1:
     print(E1)
 
+#Accessing the refresh_token and store in a variable
 output_file = open(otp, 'w')
 client_token = {'grant_type': 'refresh_token',
                 'refresh_token': rf,
@@ -57,6 +60,7 @@ token = {'grant_type': 'refresh_token',
 
 print(token)
 
+#Generating new Refresh_token after the login to box.com
 oauth = OAuth2(
     client_id= <client_id>,
     client_secret=<client_secret_token>,
@@ -64,16 +68,19 @@ oauth = OAuth2(
     refresh_token=token['refresh_token'],
 )
 
+#Box.com gets authenticated
 box = Client(oauth)
 
 me = box.user().get()
 print('logged in to Box as:', me.login)
 print(me.response_object)
+#The root folder is 0 folder
 folder_id = 0
 my_folder = box.folder(folder_id).get()
 print('current folder', my_folder)
 items = my_folder.get_items()
 
+#Accessing the list of folders under root and see the matched folder_name, file_name defined 
 newlist = []
 for item in items:
     print('{0} {1} is named "{2}"'.format(item.type.capitalize(), item.id, item.name))
